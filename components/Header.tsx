@@ -27,6 +27,7 @@ export default function Header() {
               <Link
                 href="https://projekte.tgm.ac.at/re-bay/"
                 className="text-gray-600 hover:text-gray-900"
+                target="_blank"
               >
                 Über uns
               </Link>
@@ -66,7 +67,7 @@ export default function Header() {
                     onClick={() => signOut()}
                     className={cn(
                       "px-4 py-2 rounded-lg font-medium text-gray-800 bg-white",
-                      "border border-green-300 transition-all",
+                      "border border-green-300 transition-shadow", 
                       "hover:bg-gradient-to-r hover:from-white hover:to-green-100",
                       "hover:border-green-400 hover:shadow-md",
                       "focus:outline-none focus:ring-2 focus:ring-green-200"
