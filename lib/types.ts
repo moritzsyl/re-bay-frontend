@@ -1,7 +1,8 @@
-export type ProductCondition = "Neu" | "Kaum Benutzt" | "Benutzt"
+export type ProductCondition = "NEUWERTIG" | "KAUM_BENUTZT" | "BENUTZT"
 
-export type ProductCategory = "Monitor" | "Computer" | "Computerzusatz" | "Audio" | "Drucker"
-
+export type ProductCategory = "MONITOR" | "COMPUTER" | "COMPUTERZUSATZ" | "AUDIO" | "DRUCKER"
+export const ProductCategories: ProductCategory[] = ["MONITOR", "COMPUTER", "COMPUTERZUSATZ", "AUDIO", "DRUCKER"]
+export const ProductConditions: ProductCondition[] = ["NEUWERTIG", "KAUM_BENUTZT", "BENUTZT"]
 export interface Product {
   id: string
   productName: string

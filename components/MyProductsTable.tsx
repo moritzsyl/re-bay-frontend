@@ -77,50 +77,60 @@ export function MyProductsTable() {
   }
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Produkt Name</TableHead>
-          <TableHead>Modell</TableHead>
-          <TableHead>Hersteller</TableHead>
-          <TableHead>Beschreibung</TableHead>
-          <TableHead>Kategorie</TableHead>
-          <TableHead>Zustand</TableHead>
-          <TableHead>Anzahl</TableHead>
-          <TableHead className="text-right">Aktionen</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {products.map((product) => (
-          <TableRow key={product.id}>
-            <TableCell className="font-medium">{product.productName}</TableCell>
-            <TableCell>{product.model}</TableCell>
-            <TableCell>{product.manufacturer}</TableCell>
-            <TableCell>{product.description}</TableCell>
-            <TableCell>{product.category}</TableCell>
-            <TableCell>{product.condition}</TableCell>
-            <TableCell>{product.stock}</TableCell>
-            <TableCell className="text-right">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="h-8 w-8 p-0">
-                    <span className="sr-only">Open menu</span>
-                    <MoreHorizontal className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
-                  <DropdownMenuItem onClick={() => router.push(`meineprodukte/bearbeiten/${product.id}`)}>
-                    Bearbeiten
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleDelete(product.id)}>Löschen</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </TableCell>
+    <div>
+      {/* Button zum Hinzufügen eines neuen Produkts */}
+      <Button
+        onClick={() => router.push("/produkte/hinzufuegen")}
+        className="mb-4 bg-green-500 hover:bg-green-600 text-white"
+      >
+        Neues Produkt hinzufügen
+      </Button>
+
+      {/* Tabelle */}
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>Produkt Name</TableHead>
+            <TableHead>Modell</TableHead>
+            <TableHead>Hersteller</TableHead>
+            <TableHead>Beschreibung</TableHead>
+            <TableHead>Kategorie</TableHead>
+            <TableHead>Zustand</TableHead>
+            <TableHead>Anzahl</TableHead>
+            <TableHead className="text-right">Aktionen</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {products.map((product) => (
+            <TableRow key={product.id}>
+              <TableCell className="font-medium">{product.productName}</TableCell>
+              <TableCell>{product.model}</TableCell>
+              <TableCell>{product.manufacturer}</TableCell>
+              <TableCell>{product.description}</TableCell>
+              <TableCell>{product.category}</TableCell>
+              <TableCell>{product.condition}</TableCell>
+              <TableCell>{product.stock}</TableCell>
+              <TableCell className="text-right">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="h-8 w-8 p-0">
+                      <span className="sr-only">Open menu</span>
+                      <MoreHorizontal className="h-4 w-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
+                    <DropdownMenuItem onClick={() => router.push(`meineprodukte/bearbeiten/${product.id}`)}>
+                      Bearbeiten
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => handleDelete(product.id)}>Löschen</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   )
 }
-

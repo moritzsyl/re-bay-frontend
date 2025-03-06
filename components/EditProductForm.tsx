@@ -1,5 +1,6 @@
 "use client";
 
+import { Product } from "@/lib/types";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -17,18 +18,6 @@ import {
   SelectLabel,
   SelectItem,
 } from "@/components/ui/select";
-
-interface Product {
-  id: string;
-  productName: string;
-  model: string;
-  manufacturer: string;
-  category: string;
-  condition: string;
-  description: string;
-  stock: string;
-  images: File[];
-}
 
 export function EditProductForm({ productId }: { productId: string }) {
   const { data: session } = useSession();
