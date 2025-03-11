@@ -16,8 +16,8 @@ const products: Product[] = [
     stock: 10,
     description: "Leistungsstarker Laptop",
     images: ["/laptop.jpg"],
-    category: "Computer",
-    condition: "Neu",
+    category: "COMPUTER",
+    condition: "NEUWERTIG",
   },
   {
     id: "2",
@@ -27,8 +27,8 @@ const products: Product[] = [
     stock: 3,
     description: "Gute Drucker",
     images: ["/drucker.jpg"],
-    category: "Drucker",
-    condition: "Benutzt",
+    category: "DRUCKER",
+    condition: "BENUTZT",
   },
   // ... weitere Produkte
 ];

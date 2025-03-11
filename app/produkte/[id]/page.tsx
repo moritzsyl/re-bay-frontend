@@ -1,7 +1,7 @@
 import type { Product } from "@/lib/types"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { requestProduct } from "@/app/actions"
+
 import { getServerSession } from "next-auth/next"
 import { redirect } from "next/navigation"
 
@@ -16,8 +16,8 @@ async function getProduct(id: string): Promise<Product> {
     stock: 10,
     description: "Dies ist ein Beispielprodukt mit einer ausführlichen Beschreibung.",
     images: ["/placeholder.svg"],
-    category: "Computer",
-    condition: "Neu",
+    category: "COMPUTER",
+    condition: "NEUWERTIG",
   }
 }
 
@@ -61,7 +61,7 @@ export default async function ProductDetail({ params }: { params: { id: string }
           <p className="text-lg mb-4">
             <strong>Beschreibung:</strong> {product.description}
           </p>
-          <form action={requestProduct}>
+          <form >
             <input type="hidden" name="productId" value={product.id} />
             <Button type="submit" className="w-full">
               Anfragen
