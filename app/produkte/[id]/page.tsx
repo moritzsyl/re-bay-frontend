@@ -24,11 +24,11 @@ async function getProduct(id: string): Promise<Product> {
 export default async function ProductDetail({ params }: { params: { id: string } }) {
   const product = await getProduct(params.id)
   const session = await getServerSession()
-  
-    if (!session) {
-      redirect("/produkte")
-    }
-  
+
+  if (!session) {
+    redirect("/produkte")
+  }
+
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">{product.productName}</h1>
@@ -63,7 +63,7 @@ export default async function ProductDetail({ params }: { params: { id: string }
           </p>
           <form action={requestProduct}>
             <input type="hidden" name="productId" value={product.id} />
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full bg-green-500 hover:bg-green-600 text-white">
               Anfragen
             </Button>
           </form>

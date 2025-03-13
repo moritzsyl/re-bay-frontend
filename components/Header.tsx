@@ -16,7 +16,7 @@ export default function Header() {
   const isConsumer = session?.user?.role === "ROLE_ABNEHMER";
 
   return (
-    <header className="bg-white shadow-md">
+    <header className="bg-white shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center">
           <Image src="/rebay_logo_untransparent.jpeg" alt="Logo" width={110} height={110} />
@@ -67,7 +67,7 @@ export default function Header() {
                     onClick={() => signOut()}
                     className={cn(
                       "px-4 py-2 rounded-lg font-medium text-gray-800 bg-white",
-                      "border border-green-300 transition-shadow", 
+                      "border border-green-300 transition-shadow",
                       "hover:bg-gradient-to-r hover:from-white hover:to-green-100",
                       "hover:border-green-400 hover:shadow-md",
                       "focus:outline-none focus:ring-2 focus:ring-green-200"
