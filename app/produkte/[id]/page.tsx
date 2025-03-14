@@ -4,6 +4,11 @@ import { Button } from "@/components/ui/button"
 import { requestProduct } from "@/app/actions"
 import { getServerSession } from "next-auth/next"
 import { redirect } from "next/navigation"
+import { ChevronRight, Package, Factory, Tag, CheckCircle, XCircle, Info } from "lucide-react";
+import Link from "next/link"
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Separator } from "@/components/ui/separator"
 
 // Dummy-Funktion zum Abrufen von Produktdaten
 async function getProduct(id: string): Promise<Product> {
@@ -30,41 +35,98 @@ export default async function ProductDetail({ params }: { params: { id: string }
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">{product.productName}</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <Image
-            src={product.images[0] || "/placeholder.svg"}
-            alt={product.productName}
-            width={500}
-            height={300}
-            className="w-full h-auto object-cover rounded-lg"
-          />
+    <div className="container mx-auto py-8 px-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Product Image */}
+        <div className="lg:col-span-2">
+          <Card className="overflow-hidden">
+            <CardContent className="p-0">
+              <div className="relative aspect-video md:aspect-[4/3] lg:aspect-square w-full h-[700px]">
+                <Image
+                  src={product.images[0] || "/placeholder.svg"}
+                  alt={product.productName}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            </CardContent>
+          </Card>
         </div>
-        <div>
-          <p className="text-lg mb-2">
-            <strong>Modell:</strong> {product.model}
-          </p>
-          <p className="text-lg mb-2">
-            <strong>Hersteller:</strong> {product.manufacturer}
-          </p>
-          <p className="text-lg mb-2">
-            <strong>Verfügbar:</strong> {product.stock}
-          </p>
-          <p className="text-lg mb-2">
-            <strong>Kategorie:</strong> {product.category}
-          </p>
-          <p className="text-lg mb-2">
-            <strong>Zustand:</strong> {product.condition}
-          </p>
-          <p className="text-lg mb-4">
-            <strong>Beschreibung:</strong> {product.description}
-          </p>
-          <form action={requestProduct}>
+
+        {/* Product Details */}
+        <div className="space-y-6">
+          <div>
+            <Badge className="mb-3">{product.category}</Badge>
+            <h1 className="text-3xl font-bold tracking-tight">{product.productName}</h1>
+            <p className="text-muted-foreground mt-2">
+              {product.stock > 0 ? (
+                <span className="flex items-center text-custom-green">
+                  <CheckCircle className="h-4 w-4 mr-1" />{product.stock} verfügbar
+                </span>
+              ) : (
+                <span className="flex items-center text-red-500">
+                  <XCircle className="h-4 w-4 mr-1" />Nicht verfügbar
+                </span>
+              )}
+            </p>
+          </div>
+
+          <Separator />
+
+          <div className="space-y-4">
+            <div className="flex items-start gap-3">
+              <Package className="h-5 w-5 text-muted-foreground mt-0.5" />
+              <div>
+                <p className="font-medium">Modell</p>
+                <p className="text-muted-foreground">{product.model}</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <Factory className="h-5 w-5 text-muted-foreground mt-0.5" />
+              <div>
+                <p className="font-medium">Hersteller</p>
+                <p className="text-muted-foreground">{product.manufacturer}</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <Tag className="h-5 w-5 text-muted-foreground mt-0.5" />
+              <div>
+                <p className="font-medium">Kategorie</p>
+                <p className="text-muted-foreground">{product.category}</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <CheckCircle className="h-5 w-5 text-muted-foreground mt-0.5" />
+              <div>
+                <p className="font-medium">Zustand</p>
+                <p className="text-muted-foreground">{product.condition}</p>
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          <div>
+            <div className="flex items-start gap-3 mb-2">
+              <Info className="h-5 w-5 text-muted-foreground mt-0.5" />
+              <p className="font-medium">Beschreibung</p>
+            </div>
+            <p className="text-muted-foreground leading-relaxed">{product.description}</p>
+          </div>
+
+          <form action={requestProduct} className="mt-8">
             <input type="hidden" name="productId" value={product.id} />
-            <Button type="submit" className="w-full bg-green-500 hover:bg-green-600 text-white">
-              Anfragen
+            <Button
+              type="submit"
+              className="w-full bg-green-500 hover:bg-green-600 text-white"
+              size="lg"
+              disabled={product.stock === 0}
+            >
+              Produkt anfragen
             </Button>
           </form>
         </div>

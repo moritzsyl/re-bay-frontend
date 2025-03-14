@@ -24,13 +24,46 @@ const products: Product[] = [
     productName: "Drucker ABC",
     model: "A2",
     manufacturer: "IT Solutions",
-    stock: 3,
+    stock: 0,
     description: "Gute Drucker",
     images: ["/drucker.jpg"],
     category: "Drucker",
     condition: "Benutzt",
   },
-  // ... weitere Produkte
+  {
+    id: "3",
+    productName: "Monitor 123",
+    model: "M3",
+    manufacturer: "TechCo",
+    stock: 5,
+    description: "Hochauflösender Monitor",
+    images: ["/monitor.jpg"],
+    category: "Monitor",
+    condition: "Kaum Benutzt",
+  },
+  {
+    id: "4",
+    productName: "Tastatur Z",
+    model: "T4",
+    manufacturer: "IT Solutions",
+    stock: 2,
+    description: "Mechanische Tastatur",
+    images: ["/tastatur.jpg"],
+    category: "Computerzusatz",
+    condition: "Benutzt",
+  },
+  {
+    id: "5",
+    productName: "Maus M",
+    model: "M5",
+    manufacturer: "TechCo",
+    stock: 0,
+    description: "Ergonomische Maus",
+    images: ["/maus.jpg"],
+    category: "Computerzusatz",
+    condition: "Neu",
+  },
+  
 ];
 
 export default function ProductCatalog() {
@@ -54,7 +87,6 @@ export default function ProductCatalog() {
       <Sidebar setFilteredProducts={setFilteredProducts} products={products} />
       <main className="flex-1 p-6">
         <Input
-          
           placeholder="Suche..."
           value={searchTerm}
           onChange={handleSearch}
