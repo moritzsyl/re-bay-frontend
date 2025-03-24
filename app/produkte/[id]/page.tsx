@@ -73,7 +73,6 @@ export default async function ProductDetail({ params }: { params: { id: string }
           </div>
 
           <Separator />
-
           <div className="space-y-4">
             <div className="flex items-start gap-3">
               <Package className="h-5 w-5 text-muted-foreground mt-0.5" />

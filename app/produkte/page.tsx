@@ -47,7 +47,7 @@ const products: Product[] = [
     model: "T4",
     manufacturer: "IT Solutions",
     stock: 2,
-    description: "Mechanische Tastatur",
+    description: "Farbige Tastatur",
     images: ["/tastatur.jpg"],
     category: "Computerzusatz",
     condition: "Benutzt",
