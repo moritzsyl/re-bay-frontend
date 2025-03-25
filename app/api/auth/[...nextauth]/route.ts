@@ -5,21 +5,25 @@ declare module "next-auth" {
   interface Session {
     user: {
       id: string;
-      email: string;
       role: string;
-      token: string;
     };
+    token: string;
+    expires: string;
   }
   interface User {
+    id: string;
     role: string;
     token: string;
+    expires: string;
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
+    id: string;
     role: string;
     token: string;
+    expires: string;
   }
 }
 
@@ -32,15 +36,20 @@ const handler = NextAuth({
     
     async jwt({ token, user }) {
       if (user) {
+        token.id = user.id;
         token.role = user.role;
         token.token = user.token;
+        token.expires = user.expires;
       }
       return token;
     },
+    
     async session({ session, token }) {
       if (session.user) {
-        session.user.role = token.role as string;
-        session.user.token = token.token as string;
+        session.user.id = token.id;
+        session.user.role = token.role;
+        session.token = token.token;
+        session.expires = token.expires;
       }
       return session;
     },
@@ -67,12 +76,11 @@ const handler = NextAuth({
           const jsonData = await res.json();
 
           if (res.ok && jsonData) {
-            console.log("Anmeldung erfolgreich. Hello" + jsonData.user.loginContactEmail);
             return {
               id: jsonData.user.id,
-              email: jsonData.user.loginContactEmail,
               role: jsonData.user.authorities[0].authority,
               token: jsonData.token,
+              expires: jsonData.expires,
             };
           } else {
             return null;

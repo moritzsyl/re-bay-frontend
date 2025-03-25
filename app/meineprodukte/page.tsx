@@ -1,18 +1,19 @@
-import { getServerSession } from "next-auth/next"
+"use client"
+import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
-import { MyProductsTable } from "@/components/MyProductsTable"
+import  MyProductsGrid  from "@/components/MyProductsTable"
 
-export default async function EditProductPage() {
-  const session = await getServerSession()
+export default function EditProductPage() {
+  const { data: session } = useSession()
 
-  if (!session) {
+  if (session?.user.role !== "ROLE_ANBIETER") {
     redirect("/")
   }
 
   return (
     <div className="container mx-auto py-10">
       <h1 className="text-3xl font-bold mb-5">Meine Produkte</h1>
-      <MyProductsTable />
+      <MyProductsGrid />
     </div>
   )
 }

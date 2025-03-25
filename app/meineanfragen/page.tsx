@@ -1,11 +1,11 @@
-import { getServerSession } from "next-auth/next"
+import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
 import { MyRequestsTable } from "@/components/MyRequestsTable"
 
 export default async function EditProductPage() {
-  const session = await getServerSession()
+  const { data: session } = useSession()
 
-  if (!session) {
+  if (session?.user.role !== "ROLE_ABNEHMER") {
     redirect("/")
   }
 

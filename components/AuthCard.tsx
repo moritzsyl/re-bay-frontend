@@ -32,7 +32,7 @@ export default function AuthCard({ onClose }: AuthCardProps) {
           </svg>
         </button>
         <CardHeader>
-          <CardTitle className="text-lg font-semibold mb-4 text-green-400">Konto</CardTitle>
+          <CardTitle className="text-lg font-semibold mb-4 text-green-500">Konto</CardTitle>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="login">

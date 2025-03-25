@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,16 +10,14 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
-import { MoreHorizontal } from "lucide-react"
+import { MoreHorizontal, Plus } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { useToast } from "@/hooks/use-toast"
-import { Product } from "@/lib/types"
+import type { Product } from "@/lib/types"
+import MyProductCard from "@/components/MyProductCard"
 
-export function MyProductsTable() {
+export default function MyProductsGrid() {
   const [products, setProducts] = useState<Product[]>([])
   const router = useRouter()
-  const { toast } = useToast()
   const { data: session } = useSession()
 
   useEffect(() => {
@@ -28,109 +26,125 @@ export function MyProductsTable() {
     }
   }, [session])
 
+  const processProductImages = (products: Product[]) => {
+    return products.map((product) => {
+      if (product.images && product.images.length > 0) {
+        // Process each image in the array
+        const processedImages = product.images.map((img) => {
+          // Check if the image is already a data URL
+          if (img.startsWith("data:")) {
+            return img
+          }
+          // Check if it's a base64 string without the data URL prefix
+          else if (/^[A-Za-z0-9+/=]+$/.test(img)) {
+            const imageType = "image/jpeg"
+            return `data:${imageType};base64,${img}`
+          }
+          return img
+        })
+
+        return { ...product, images: processedImages }
+      }
+      return product
+    })
+  }
+
+  // Wird beim laden der Seite aufgerufen
   const fetchProducts = async () => {
     try {
       const response = await fetch("http://localhost:8050/products/all", {
         headers: {
-          Authorization: `Bearer ${session?.user?.token}`,
+          Authorization: `Bearer ${session?.token}`,
         },
       })
       if (!response.ok) {
         throw new Error("Failed to fetch products")
       }
       const data = await response.json()
-      setProducts(data)
+      // Process the images before setting the state
+      const processedData = processProductImages(data)
+      setProducts(processedData)
     } catch (error) {
       console.error("Error fetching products:", error)
-      toast({
-        title: "Error",
-        description: "Fehler beim Laden der Produkte. Bitte versuchen Sie es erneut.",
-        variant: "destructive",
-      })
     }
   }
 
-  const handleDelete = async (id: string) => {
+  // Wird bei einem Klick auf Löschen im Kontext Dropdown Menü eines Produkts aufgerufen
+  const handleDelete = async (id: number) => {
     try {
       const response = await fetch(`http://localhost:8050/products/delete/${id}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${session?.user?.token}`
+          Authorization: `Bearer ${session?.token}`,
         },
       })
       if (!response.ok) {
         throw new Error("Failed to delete product")
       }
       setProducts(products.filter((product) => product.id !== id))
-      toast({
-        title: "Erfolg",
-        description: "Produkt erfolgreich gelöscht.",
-      })
     } catch (error) {
       console.error("Error deleting product:", error)
-      toast({
-        title: "Error",
-        description: "Fehler beim Löschen des Produkts. Bitte versuchen Sie es erneut.",
-        variant: "destructive",
-      })
     }
   }
 
   return (
-    <div>
-      {/* Button zum Hinzufügen eines neuen Produkts */}
-      <Button
-        onClick={() => router.push("/produkte/hinzufuegen")}
-        className="mb-4 bg-green-500 hover:bg-green-600 text-white"
-      >
-        Neues Produkt hinzufügen
-      </Button>
+    <div className="container mx-auto px-4">
+      <div className="flex justify-between items-center mb-6">
+        <Button
+          onClick={() => router.push("/produkte/hinzufuegen")}
+          className="bg-green-500 hover:bg-green-600 text-white"
+        >
+          <Plus className="mr-2 h-4 w-4" /> Neues Produkt hinzufügen
+        </Button>
+      </div>
 
-      {/* Tabelle */}
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Produkt Name</TableHead>
-            <TableHead>Modell</TableHead>
-            <TableHead>Hersteller</TableHead>
-            <TableHead>Beschreibung</TableHead>
-            <TableHead>Kategorie</TableHead>
-            <TableHead>Zustand</TableHead>
-            <TableHead>Anzahl</TableHead>
-            <TableHead className="text-right">Aktionen</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+      {products.length === 0 ? (
+        <div className="text-center py-10">
+          <p className="text-gray-500">Keine Produkte gefunden</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {products.map((product) => (
-            <TableRow key={product.id}>
-              <TableCell className="font-medium">{product.productName}</TableCell>
-              <TableCell>{product.model}</TableCell>
-              <TableCell>{product.manufacturer}</TableCell>
-              <TableCell>{product.description}</TableCell>
-              <TableCell>{product.category}</TableCell>
-              <TableCell>{product.condition}</TableCell>
-              <TableCell>{product.stock}</TableCell>
-              <TableCell className="text-right">
+            <div key={product.id} className="relative group">
+              <MyProductCard product={product} />
+              <div className="absolute top-2 right-2 z-10">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="h-8 w-8 p-0">
-                      <span className="sr-only">Open menu</span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8 rounded-full bg-white/90 shadow-sm hover:bg-white"
+                    >
                       <MoreHorizontal className="h-4 w-4" />
+                      <span className="sr-only">Aktionen</span>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuLabel>Aktionen</DropdownMenuLabel>
-                    <DropdownMenuItem onClick={() => router.push(`meineprodukte/bearbeiten/${product.id}`)}>
+                    <DropdownMenuItem
+                      onClick={(e) => {
+                        e.preventDefault()
+                        router.push(`meineprodukte/bearbeiten/${product.id}`)
+                      }}
+                    >
                       Bearbeiten
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => handleDelete(product.id)}>Löschen</DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={(e) => {
+                        e.preventDefault()
+                        handleDelete(product.id)
+                      }}
+                    >
+                      Löschen
+                    </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-              </TableCell>
-            </TableRow>
+              </div>
+            </div>
           ))}
-        </TableBody>
-      </Table>
+        </div>
+      )}
     </div>
   )
 }
+

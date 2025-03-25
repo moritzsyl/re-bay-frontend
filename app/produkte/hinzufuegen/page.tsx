@@ -1,12 +1,13 @@
-import { getServerSession } from "next-auth/next"
+"use client"
+import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
 import AddProductForm from "@/components/AddProductForm"
 
-export default async function EditProductPage() {
-  const session = await getServerSession()
+export default function EditProductPage() {
+  const { data: session } = useSession()
 
-  if (!session) {
-    redirect("/produkte")
+  if (session?.user.role !== "ROLE_ANBIETER") {
+    redirect("/")
   }
 
   return (

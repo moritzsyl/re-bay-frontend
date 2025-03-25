@@ -6,7 +6,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
 
 interface Request {
     id: string;
@@ -20,7 +19,6 @@ interface Request {
 export function MyRequestsTable() {
   const [requests, setRequests] = useState<Request[]>([]);
   const router = useRouter();
-  const { toast } = useToast();
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -33,7 +31,7 @@ export function MyRequestsTable() {
     try {
       const response = await fetch("http://localhost:8050/requests/mine", {
         headers: {
-          Authorization: `Bearer ${session?.user?.token}`,
+          Authorization: `Bearer ${session?.token}`,
         },
       });
       if (!response.ok) {
@@ -43,11 +41,6 @@ export function MyRequestsTable() {
       setRequests(data);
     } catch (error) {
       console.error("Error fetching requests:", error);
-      toast({
-        title: "Error",
-        description: "Fehler beim Laden der Anfragen. Bitte versuchen Sie es erneut.",
-        variant: "destructive",
-      });
     }
   };
 
@@ -56,24 +49,15 @@ export function MyRequestsTable() {
       const response = await fetch(`http://localhost:8050/requests/delete/${id}`, {
         method: "DELETE",
         headers: {
-          Authorization: `Bearer ${session?.user?.token}`,
+          Authorization: `Bearer ${session?.token}`,
         },
       });
       if (!response.ok) {
         throw new Error("Failed to delete request");
       }
       setRequests(requests.filter((request) => request.id !== id));
-      toast({
-        title: "Erfolg",
-        description: "Anfrage erfolgreich gelöscht.",
-      });
     } catch (error) {
       console.error("Error deleting request:", error);
-      toast({
-        title: "Error",
-        description: "Fehler beim Löschen der Anfrage. Bitte versuchen Sie es erneut.",
-        variant: "destructive",
-      });
     }
   };
 

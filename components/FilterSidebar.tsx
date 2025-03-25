@@ -11,7 +11,7 @@ import {
   SelectLabel,
   SelectGroup,
 } from "@/components/ui/select";
-import { Product, ProductCategory, ProductCondition } from "@/lib/types";
+import { Product, ProductCategory, ProductCondition, conditionDisplayNames, categoryDisplayNames } from "@/lib/types";
 
 interface SidebarProps {
   setFilteredProducts: (products: Product[]) => void;
@@ -31,8 +31,8 @@ export default function Sidebar({
     const filtered = products.filter((product) => {
       return (
         (stock ? product.stock >= Number(stock) : true) && // stock als string behandeln und in eine Zahl umwandeln
-        (condition !== "alle" ? product.condition === condition : true) &&
-        (category !== "alle" ? product.category === category : true) &&
+        (condition !== "alle" ? conditionDisplayNames[product.condition] === condition : true) &&
+        (category !== "alle" ? categoryDisplayNames[product.category] === category : true) &&
         (manufacturer
           ? product.manufacturer
               .toLowerCase()
@@ -53,7 +53,7 @@ export default function Sidebar({
 
   return (
     <div className="w-64 p-4 border-r">
-      <h2 className="text-lg font-semibold mb-4 text-green-400">Filter</h2>
+      <h2 className="text-lg font-semibold mb-4 text-green-500">Filter</h2>
 
       <div className="space-y-4">
         <div>
@@ -81,8 +81,8 @@ export default function Sidebar({
               <SelectContent>
                 <SelectLabel className="text-green-400">Zustand</SelectLabel>
                 <SelectItem value="alle">Alle</SelectItem>
-                <SelectItem value="Neu">Neu</SelectItem>
-                <SelectItem value="Kaum Benutzt">Kaum Benutzt</SelectItem>
+                <SelectItem value="Neuwertig">Neuwertig</SelectItem>
+                <SelectItem value="Kaum benutzt">Kaum benutzt</SelectItem>
                 <SelectItem value="Benutzt">Benutzt</SelectItem>
               </SelectContent>
             </SelectGroup>

@@ -19,10 +19,13 @@ import {
   ProductCategory, 
   ProductCondition, 
   ProductCategories, 
-  ProductConditions 
+  ProductConditions,
+  conditionDisplayNames,
+  categoryDisplayNames
 } from "@/lib/types";
 import { ImagePlus, Loader2 } from 'lucide-react';
 import { json } from "stream/consumers";
+import { redirect } from "next/dist/server/api-utils";
 
 export default function AddProduct() {
   const { data: session } = useSession();
@@ -135,7 +138,7 @@ export default function AddProduct() {
     setError(null);
     setSuccess(null);
     
-    if (!session?.user?.token) {
+    if (!session?.token) {
       setError("Sie müssen angemeldet sein, um ein Produkt hinzuzufügen.");
       return;
     }
@@ -153,11 +156,11 @@ export default function AddProduct() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${session.user.token}`,
+          Authorization: `Bearer ${session.token}`,
         },
         body: JSON.stringify(product),
       });
-      
+      console.log(JSON.stringify(product))
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
         throw new Error(errorData?.message || `Fehler: ${response.status}`);
@@ -272,7 +275,7 @@ export default function AddProduct() {
               <SelectContent>
                 {ProductCategories.map((category) => (
                   <SelectItem key={category} value={category}>
-                    {category}
+                    {categoryDisplayNames[category]}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -297,7 +300,7 @@ export default function AddProduct() {
               <SelectContent>
                 {ProductConditions.map((condition) => (
                   <SelectItem key={condition} value={condition}>
-                    {condition}
+                    {conditionDisplayNames[condition]}
                   </SelectItem>
                 ))}
               </SelectContent>
