@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Eye, EyeOff } from "lucide-react"
+
 
 interface RegisterFormProps {
   onClose: () => void;
@@ -30,6 +32,9 @@ export default function RegisterForm({ onClose }: RegisterFormProps) {
   const [cityError, setCityError] = useState("")
   const [postalCodeError, setPostalCodeError] = useState("")
   const [roleError, setRoleError] = useState("")
+
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
   const validateName = (value: string) => {
     if (!value.trim()) {
@@ -242,34 +247,53 @@ export default function RegisterForm({ onClose }: RegisterFormProps) {
             />
             {phoneError && <p className="text-red-500 text-sm">{phoneError}</p>}
           </div>
-          <div className="space-y-2">
+          <div className="space-y-2 relative">
             <Label htmlFor="password">Passwort</Label>
-            <Input
-              id="password"
-              type="password"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value)
-                validatePassword(e.target.value)
-              }}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md transition-all focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 hover:border-green-400"
-            />
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value)
+                  validatePassword(e.target.value)
+                }}
+                required
+                className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md transition-all focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 hover:border-green-400"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
             {passwordError && <p className="text-red-500 text-sm">{passwordError}</p>}
           </div>
-          <div className="space-y-2">
+
+          <div className="space-y-2 relative mt-4">
             <Label htmlFor="confirmPassword">Passwort Wiederholen</Label>
-            <Input
-              id="confirmPassword"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => {
-                setConfirmPassword(e.target.value)
-                validateConfirmPassword(e.target.value)
-              }}
-              required
-              className="w-full px-3 py-2 border border-gray-300 rounded-md transition-all focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 hover:border-green-400"
-            />
+            <div className="relative">
+              <Input
+                id="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => {
+                  setConfirmPassword(e.target.value)
+                  validateConfirmPassword(e.target.value)
+                }}
+                required
+                className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md transition-all focus:outline-none focus:ring-2 focus:ring-green-400 focus:border-green-400 hover:border-green-400"
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                className="absolute inset-y-0 right-2 flex items-center text-gray-500 hover:text-gray-700"
+              >
+                {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
             {confirmPasswordError && <p className="text-red-500 text-sm">{confirmPasswordError}</p>}
           </div>
         </div>
