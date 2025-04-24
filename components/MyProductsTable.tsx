@@ -29,25 +29,20 @@ export default function MyProductsGrid() {
   const processProductImages = (products: Product[]) => {
     return products.map((product) => {
       if (product.images && product.images.length > 0) {
-        // Process each image in the array
         const processedImages = product.images.map((img) => {
-          // Check if the image is already a data URL
           if (img.startsWith("data:")) {
-            return img
+            return img;
+          } else if (/^[A-Za-z0-9+/=]+$/.test(img)) {
+            return `data:image/jpeg;base64,${img}`;
           }
-          // Check if it's a base64 string without the data URL prefix
-          else if (/^[A-Za-z0-9+/=]+$/.test(img)) {
-            const imageType = "image/jpeg"
-            return `data:${imageType};base64,${img}`
-          }
-          return img
-        })
+          return img;
+        });
 
-        return { ...product, images: processedImages }
+        return { ...product, images: processedImages };
       }
-      return product
-    })
-  }
+      return product;
+    });
+  };
 
   // Wird beim laden der Seite aufgerufen
   const fetchProducts = async () => {
