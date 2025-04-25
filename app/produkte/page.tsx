@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Sidebar from "@/components/FilterSidebar";
 import ProductCard from "@/components/CatalogProductCard";
 import { Input } from "@/components/ui/input";
-import { Product } from "@/lib/types";
+import { Product, processProductImages } from "@/lib/types";
 
 export default function ProductCatalog() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -27,24 +27,6 @@ export default function ProductCatalog() {
 
     fetchProducts();
   }, []);
-
-  const processProductImages = (products: Product[]) => {
-    return products.map((product) => {
-      if (product.images && product.images.length > 0) {
-        const processedImages = product.images.map((img) => {
-          if (img.startsWith("data:")) {
-            return img;
-          } else if (/^[A-Za-z0-9+/=]+$/.test(img)) {
-            return `data:image/jpeg;base64,${img}`;
-          }
-          return img;
-        });
-
-        return { ...product, images: processedImages };
-      }
-      return product;
-    });
-  };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const term = e.target.value.toLowerCase();

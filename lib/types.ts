@@ -30,3 +30,21 @@ export interface Product {
   category: ProductCategory
   condition: ProductCondition
 }
+
+export const processProductImages = (products: Product[]) => {
+    return products.map((product) => {
+      if (product.images && product.images.length > 0) {
+        const processedImages = product.images.map((img) => {
+          if (img.startsWith("data:")) {
+            return img;
+          } else if (/^[A-Za-z0-9+/=]+$/.test(img)) {
+            return `data:image/jpeg;base64,${img}`;
+          }
+          return img;
+        });
+
+        return { ...product, images: processedImages };
+      }
+      return product;
+    });
+  };

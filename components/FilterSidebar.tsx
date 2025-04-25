@@ -137,7 +137,7 @@ export default function Sidebar({
             className="w-full bg-gray-500 hover:bg-gray-600 text-white"
           >
             Zurücksetzen
-          </Button>
+          </Button> 
         </div>
       </div>
     </div>

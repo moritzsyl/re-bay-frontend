@@ -150,7 +150,7 @@ export default function AddProduct() {
     }
     
     setIsSubmitting(true);
-    
+    console.log(JSON.stringify(product))
     try {
       const response = await fetch("http://localhost:8050/products/create", {
         method: "POST",
