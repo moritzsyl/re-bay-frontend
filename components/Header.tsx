@@ -26,7 +26,7 @@ export default function Header() {
         <nav>
           <ul className="flex items-center space-x-8">
             <li>
-              <Link href="https://projekte.tgm.ac.at/re-bay/" className="text-gray-600 hover:text-gray-900">
+              <Link href="https://projekte.tgm.ac.at/re-bay/" className="text-gray-600 hover:text-gray-900" target="_blank">
                 Über uns
               </Link>
             </li>

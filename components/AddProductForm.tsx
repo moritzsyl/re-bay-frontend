@@ -251,6 +251,7 @@ export default function AddProduct() {
               id="stock"
               type="number"
               min="0"
+              placeholder="0"
               value={product.stock}
               onChange={(e) => handleChange("stock", parseInt(e.target.value) || 0)}
               className={validationErrors.stock ? "border-red-500" : ""}
